@@ -9,6 +9,7 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
         Random random = new Random();
+        boolean found;
 
         String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
 
@@ -27,25 +28,35 @@ public class Main {
             int dim2Pos = random.nextInt(gridArray[dim1Pos].length);
             String cpuChoice = gridArray[dim1Pos][dim2Pos];
 
-            for (int i = 0; i < gridArray.length; i++){
-                for (int j = 0; j < gridArray[i].length; j++){
+            found = false;
 
-                    if (userChoice.equals(gridArray[i][j])){
+            for (int i = 0; i < gridArray.length; i++) {
+                for (int j = 0; j < gridArray[i].length; j++) {
 
-                        grid = grid.replace(gridArray[i][j],
-                                "\u001b[34;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                    }
-
-                    else if (cpuChoice.equals(gridArray[i][j])){
+                    if (cpuChoice.equals(gridArray[i][j])) {
 
                         grid = grid.replace(gridArray[i][j],
                                 "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
                     }
-
                 }
+            }
+
+            for (int i = 0; i < gridArray.length; i++) {
+                for (int k = 0; k < gridArray[i].length; k++) {
+
+                    if (userChoice.equalsIgnoreCase(gridArray[i][k])) {
+
+                        grid = grid.replace(gridArray[i][k],
+                                "\u001b[34;1m" + "\u001B[1m" + gridArray[i][k] + "\u001B[0m");
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found) {
+                    System.out.println("Invalid option. Please pick a choice from the grid. ");
 
             }
-            //break;
         }
     }
 }
