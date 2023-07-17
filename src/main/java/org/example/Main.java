@@ -19,7 +19,7 @@ public class Main {
                 B1 B2 B3
                 C1 C2 C3""");
 
-        System.out.println("Please choose a position from the grid: \n");
+        System.out.println("Please choose a position from the grid. Enter \"Q\" to quit: \n");
 
         while (true) {
 
@@ -29,6 +29,10 @@ public class Main {
 
             System.out.println(grid);
             String userChoice = in.nextLine();
+
+            if (userChoice.equalsIgnoreCase("Q")) {
+                break;
+            }
 
             int dim1Pos = random.nextInt(gridArray.length);
             int dim2Pos = random.nextInt(gridArray[dim1Pos].length);
@@ -60,11 +64,14 @@ public class Main {
             }
 
             if (!found) {
-                    System.out.println("Invalid option. Please pick a choice from the grid. ");
+                    System.out.println("Invalid option. Please pick a choice from the grid: ");
             }
 
             second = true;
 
         }
+
+        System.out.println("Thank you for playing!");
+
     }
 }
