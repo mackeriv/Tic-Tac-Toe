@@ -9,7 +9,8 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
         Random random = new Random();
-        boolean found;
+        boolean found = false;
+        boolean second = false;
 
         String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
 
@@ -18,9 +19,14 @@ public class Main {
                 B1 B2 B3
                 C1 C2 C3""");
 
+        System.out.println("Please choose a position from the grid: \n");
+
         while (true) {
 
-            System.out.println("Please choose a position from the grid: \n");
+            if (second && found) {
+                System.out.println("Please make a new choice: ");
+            }
+
             System.out.println(grid);
             String userChoice = in.nextLine();
 
@@ -55,8 +61,10 @@ public class Main {
 
             if (!found) {
                     System.out.println("Invalid option. Please pick a choice from the grid. ");
-
             }
+
+            second = true;
+
         }
     }
 }
