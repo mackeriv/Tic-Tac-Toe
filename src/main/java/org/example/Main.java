@@ -24,7 +24,7 @@ public class Main {
         while (true) {
 
             if (second && found) {
-                System.out.println("Please make a new choice: ");
+                System.out.println("Please make a new choice: \n");
             }
 
             System.out.println(grid);
@@ -40,35 +40,42 @@ public class Main {
 
             found = false;
 
+
             for (int i = 0; i < gridArray.length; i++) {
                 for (int j = 0; j < gridArray[i].length; j++) {
 
-                    if (cpuChoice.equals(gridArray[i][j])) {
+                    if (userChoice.equalsIgnoreCase(gridArray[i][j])) {
 
                         grid = grid.replace(gridArray[i][j],
-                                "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                    }
-                }
-            }
-
-            for (int i = 0; i < gridArray.length; i++) {
-                for (int k = 0; k < gridArray[i].length; k++) {
-
-                    if (userChoice.equalsIgnoreCase(gridArray[i][k])) {
-
-                        grid = grid.replace(gridArray[i][k],
-                                "\u001b[34;1m" + "\u001B[1m" + gridArray[i][k] + "\u001B[0m");
+                                "\u001b[34;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
+                        gridArray[i][j] = "taken";
                         found = true;
                     }
                 }
             }
 
+            outerLoop:
+            for (int i = 0; i < gridArray.length; i++) {
+                for (int j = 0; j < gridArray[i].length; j++) {
+
+                    if (!found) {
+                        break outerLoop;
+                    }
+
+                    if (cpuChoice.equals(gridArray[i][j]) && !cpuChoice.equals("taken")) {
+
+                            grid = grid.replace(gridArray[i][j],
+                                    "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
+                            gridArray[i][j] = "taken";
+                    }
+                }
+            }
+
             if (!found) {
-                    System.out.println("Invalid option. Please pick a choice from the grid: ");
+                    System.out.println("Invalid option. Please pick a choice from the grid: \n");
             }
 
             second = true;
-
         }
 
         System.out.println("Thank you for playing!");
