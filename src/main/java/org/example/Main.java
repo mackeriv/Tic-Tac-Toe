@@ -12,8 +12,6 @@ public class Main {
         boolean found = false;
         boolean second = false;
 
-        //test
-
         String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
 
         String grid = ("""
@@ -42,7 +40,6 @@ public class Main {
 
             found = false;
 
-
             for (int i = 0; i < gridArray.length; i++) {
                 for (int j = 0; j < gridArray[i].length; j++) {
 
@@ -64,11 +61,19 @@ public class Main {
                         break outerLoop;
                     }
 
-                    if (cpuChoice.equals(gridArray[i][j]) && !cpuChoice.equals("taken")) {
+                    while (cpuChoice.equals("taken")) {
 
-                            grid = grid.replace(gridArray[i][j],
-                                    "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                            gridArray[i][j] = "taken";
+                        dim1Pos = random.nextInt(gridArray.length);
+                        dim2Pos = random.nextInt(gridArray[dim1Pos].length);
+                        cpuChoice = gridArray[dim1Pos][dim2Pos];
+                    }
+
+                    if (cpuChoice.equals(gridArray[i][j])) {
+
+                        grid = grid.replace(gridArray[i][j],
+                                "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
+                        gridArray[i][j] = "taken";
+
                     }
                 }
             }
