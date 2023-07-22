@@ -5,19 +5,19 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static Random random = new Random();
 
-        Scanner in = new Scanner(System.in);
-        Random random = new Random();
-        boolean found = false;
-
-        //creates and array of choices and a grid String to be printed for every turn
-        String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
-
-        String grid = ("""
+    //creates and array of choices and a grid String to be printed for every turn
+    static String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
+    static String grid = ("""
                 A1 A2 A3
                 B1 B2 B3
                 C1 C2 C3""");
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+        boolean found = false;
 
         System.out.println("Please choose a position from the grid. Enter \"Q\" to quit: \n");
 
@@ -36,11 +36,6 @@ public class Main {
                 break;
             }
 
-            //generates a random choice from the grid for the CPU
-            int dim1Pos = random.nextInt(gridArray.length);
-            int dim2Pos = random.nextInt(gridArray[dim1Pos].length);
-            String cpuChoice = gridArray[dim1Pos][dim2Pos];
-
             //resets the "found" flag the helps the program prompt the user for a valid choice
             found = false;
 
@@ -53,11 +48,13 @@ public class Main {
                         grid = grid.replace(gridArray[i][j],
                                 "\u001b[34;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
                         //changes the chosen position on the grid String for "taken" and the "found" flag to true
-                        gridArray[i][j] = "taken";
+                        gridArray[i][j] = "X";
                         found = true;
                     }
                 }
             }
+
+            String cpuChoice = rollCpuChoice();
 
             //loop that takes the randomized CPU choice, finds it on the grid and amends the String with color formatting
             outerLoop:
@@ -69,20 +66,12 @@ public class Main {
                         break outerLoop;
                     }
 
-                    //if the CPU choice is taken, rolls a new random choice until the position is available
-                    while (cpuChoice.equals("taken")) {
-
-                        dim1Pos = random.nextInt(gridArray.length);
-                        dim2Pos = random.nextInt(gridArray[dim1Pos].length);
-                        cpuChoice = gridArray[dim1Pos][dim2Pos];
-                    }
-
                     //finds the CPU choice and colors it, marks it as "taken" in the array
                     if (cpuChoice.equals(gridArray[i][j])) {
 
                         grid = grid.replace(gridArray[i][j],
                                 "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                        gridArray[i][j] = "taken";
+                        gridArray[i][j] = "O";
 
                     }
                 }
@@ -98,4 +87,19 @@ public class Main {
         System.out.println("Thank you for playing!");
 
     }
+
+    private static String rollCpuChoice() {
+        String cpuChoice;
+        do {
+            //generates a random choice from the grid for the CPU
+            int dim1Pos = random.nextInt(gridArray.length);
+            int dim2Pos = random.nextInt(gridArray[dim1Pos].length);
+            cpuChoice = gridArray[dim1Pos][dim2Pos];
+
+         //if the CPU choice is taken, rolls a new random choice until the position is available
+        } while (cpuChoice.equals("X") || cpuChoice.equals("O"));
+
+        return cpuChoice;
+    }
+
 }
