@@ -1,11 +1,13 @@
 package org.example;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
     static Random random = new Random();
+    static boolean found = false;
 
     //creates and array of choices and a grid String to be printed for every turn
     static String[][] gridArray = {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
@@ -17,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
-        boolean found = false;
+
 
         System.out.println("Please choose a position from the grid. Enter \"Q\" to quit: \n");
 
@@ -33,10 +35,11 @@ public class Main {
 
             //quits the application
             if (userChoice.equalsIgnoreCase("Q")) {
+                System.out.println("Thank you for playing!");
                 break;
             }
 
-            //resets the "found" flag the helps the program prompt the user for a valid choice
+            //resets the "found" flag the enables the program to prompt the user for a valid choice
             found = false;
 
             //loop that takes user input, finds it on the grid and amends the String with color formatting
@@ -81,10 +84,55 @@ public class Main {
             if (!found) {
                     System.out.println("Invalid option. Please pick a choice from the grid: \n");
             }
+        }
+    }
 
+    private static void reset(){
+
+        System.out.println(grid);
+        gridArray = new String[][] {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
+        grid = ("""
+                A1 A2 A3
+                B1 B2 B3
+                C1 C2 C3""");
+    }
+
+    private static boolean processPlay(String choice, boolean isPlayer) {
+
+        int i = choice.toUpperCase().charAt(0)-65;
+        int j = Integer.parseInt(choice.substring(1,2)) - 1;
+
+        try{
+            grid = grid.replace(gridArray[i][j], (isPlayer? "\u001B[1m": "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
+            //changes the chosen position on the grid String for "X" or "0" and the "found" flag to true
+            gridArray[i][j] = isPlayer? "X" : "0";
+            found = true;
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Invalid option. Please pick a choice from the grid: \n");
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkWin() {
+        for (int i = 0; i < gridArray.length; i++) {
+            if (Arrays.stream(gridArray[i]).distinct().count() == 1) return true;
         }
 
-        System.out.println("Thank you for playing!");
+        String[] diag1 = new String[gridArray.length];
+        for (int i = 0; i < gridArray.length; i++) {
+            diag1[i] = gridArray[i][i];
+        }
+        if (Arrays.stream(diag1).distinct().count() == 1) return true;
+
+        String[] diag2 = new String[gridArray.length];
+        for (int i = 0; i < gridArray.length; i++) {
+            diag2[i] = gridArray[gridArray.length-1-i][i];
+        }
+        if (Arrays.stream(diag2).distinct().count() == 1) return true;
+
+        return false;
 
     }
 
