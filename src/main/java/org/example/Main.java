@@ -77,10 +77,10 @@ public class Main {
 
     private static boolean processPlay(String choice, Boolean isPlayer) {
 
-        int i = choice.toUpperCase().charAt(0)-65;
-        int j = Integer.parseInt(choice.substring(1,2)) - 1;
-
         try {
+            int i = choice.toUpperCase().charAt(0)-65;
+            int j = Integer.parseInt(choice.substring(1,2)) - 1;
+
             grid = grid.replace(gridArray[i][j], (isPlayer? "\u001b[34;1m": "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
             //changes the chosen position on the grid String for "X" or "O" and the "found" flag to true
             gridArray[i][j] = isPlayer? "X" : "O";
