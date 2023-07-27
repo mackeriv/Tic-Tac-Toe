@@ -20,7 +20,6 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-
         System.out.println("Please choose a position from the grid. Enter \"Q\" to quit: \n");
 
         while (true) {
@@ -42,47 +41,26 @@ public class Main {
             //resets the "found" flag the enables the program to prompt the user for a valid choice
             found = false;
 
-            //loop that takes user input, finds it on the grid and amends the String with color formatting
-            for (int i = 0; i < gridArray.length; i++) {
-                for (int j = 0; j < gridArray[i].length; j++) {
+            if (!processPlay(userChoice, true)) continue;
 
-                    if (userChoice.equalsIgnoreCase(gridArray[i][j])) {
+            //error message to be displayed in case of invalid choices
+            if (!found) {
+                System.out.println("Invalid option. Please pick a choice from the grid: \n");
+                continue;
+            }
 
-                        grid = grid.replace(gridArray[i][j],
-                                "\u001b[34;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                        //changes the chosen position on the grid String for "taken" and the "found" flag to true
-                        gridArray[i][j] = "X";
-                        found = true;
-                    }
-                }
+            if (checkWin()) {
+                System.out.println("You win!");
+                reset();
+                continue;
             }
 
             String cpuChoice = rollCpuChoice();
 
-            //loop that takes the randomized CPU choice, finds it on the grid and amends the String with color formatting
-            outerLoop:
-            for (int i = 0; i < gridArray.length; i++) {
-                for (int j = 0; j < gridArray[i].length; j++) {
-
-                    //if "found" flag is still set to "false", breaks loop and displays an error message
-                    if (!found) {
-                        break outerLoop;
-                    }
-
-                    //finds the CPU choice and colors it, marks it as "taken" in the array
-                    if (cpuChoice.equals(gridArray[i][j])) {
-
-                        grid = grid.replace(gridArray[i][j],
-                                "\u001b[31;1m" + "\u001B[1m" + gridArray[i][j] + "\u001B[0m");
-                        gridArray[i][j] = "O";
-
-                    }
-                }
-            }
-
-            //error message to be displayed in case of invalid choices
-            if (!found) {
-                    System.out.println("Invalid option. Please pick a choice from the grid: \n");
+            processPlay(cpuChoice, false);
+            if (checkWin()) {
+                System.out.println("You lose!");
+                reset();
             }
         }
     }
@@ -97,18 +75,18 @@ public class Main {
                 C1 C2 C3""");
     }
 
-    private static boolean processPlay(String choice, boolean isPlayer) {
+    private static boolean processPlay(String choice, Boolean isPlayer) {
 
         int i = choice.toUpperCase().charAt(0)-65;
         int j = Integer.parseInt(choice.substring(1,2)) - 1;
 
-        try{
-            grid = grid.replace(gridArray[i][j], (isPlayer? "\u001B[1m": "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
-            //changes the chosen position on the grid String for "X" or "0" and the "found" flag to true
-            gridArray[i][j] = isPlayer? "X" : "0";
+        try {
+            grid = grid.replace(gridArray[i][j], (isPlayer? "\u001b[34;1m": "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
+            //changes the chosen position on the grid String for "X" or "O" and the "found" flag to true
+            gridArray[i][j] = isPlayer? "X" : "O";
             found = true;
 
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.out.println("Invalid option. Please pick a choice from the grid: \n");
             return false;
         }
@@ -132,6 +110,13 @@ public class Main {
         }
         if (Arrays.stream(diag2).distinct().count() == 1) return true;
 
+        String[] col = new String[gridArray.length];
+        for (int i = 0; i < gridArray.length; i++) {
+            for (int j = 0; j < gridArray.length; j++) {
+                col[j] = gridArray[j][i];
+            }
+            if (Arrays.stream(col).distinct().count() == 1) return true;
+        }
         return false;
 
     }
