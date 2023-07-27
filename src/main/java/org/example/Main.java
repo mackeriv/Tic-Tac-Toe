@@ -26,7 +26,7 @@ public class Main {
 
             //when everything goes right, prints a new statement after the first choices are made
             if (found) {
-                System.out.println("Please make a new choice: \n");
+                System.out.println("\nPlease make a new choice: \n");
             }
 
             System.out.println(grid);
@@ -34,7 +34,7 @@ public class Main {
 
             //quits the application
             if (userChoice.equalsIgnoreCase("Q")) {
-                System.out.println("Thank you for playing!");
+                System.out.println("\nThank you for playing!");
                 break;
             }
 
@@ -50,16 +50,18 @@ public class Main {
             }
 
             if (checkWin()) {
-                System.out.println("You win!");
+                System.out.println("\n" + grid);
+                System.out.println("\n*** YOU WIN! ***\n");
                 reset();
                 continue;
             }
 
             String cpuChoice = rollCpuChoice();
-
             processPlay(cpuChoice, false);
+
             if (checkWin()) {
-                System.out.println("You lose!");
+                System.out.println("\n" + grid);
+                System.out.println("\n*** YOU LOSE! ***\n");
                 reset();
             }
         }
@@ -67,7 +69,6 @@ public class Main {
 
     private static void reset(){
 
-        System.out.println(grid);
         gridArray = new String[][] {{"A1", "A2", "A3"}, {"B1", "B2", "B3"}, {"C1", "C2", "C3"}};
         grid = ("""
                 A1 A2 A3
@@ -81,10 +82,12 @@ public class Main {
             int i = choice.toUpperCase().charAt(0)-65;
             int j = Integer.parseInt(choice.substring(1,2)) - 1;
 
-            grid = grid.replace(gridArray[i][j], (isPlayer? "\u001b[34;1m": "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
-            //changes the chosen position on the grid String for "X" or "O" and the "found" flag to true
-            gridArray[i][j] = isPlayer? "X" : "O";
-            found = true;
+            if (choice.equalsIgnoreCase(gridArray[i][j])) {
+                grid = grid.replace(gridArray[i][j], (isPlayer ? "\u001b[34;1m" : "\u001b[31;1m") + gridArray[i][j] + "\u001B[0m");
+                //changes the chosen position on the grid String for "X" or "O" and the "found" flag to true
+                gridArray[i][j] = isPlayer ? "X" : "O";
+                found = true;
+            }
 
         } catch (StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
             System.out.println("Invalid option. Please pick a choice from the grid: \n");
