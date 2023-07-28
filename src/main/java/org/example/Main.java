@@ -19,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
+        int count = 0;
 
         System.out.println("Please choose a position from the grid. Enter \"Q\" to quit: \n");
 
@@ -42,6 +43,7 @@ public class Main {
             found = false;
 
             if (!processPlay(userChoice, true)) continue;
+            else count++;
 
             //error message to be displayed in case of invalid choices
             if (!found) {
@@ -52,16 +54,24 @@ public class Main {
             if (checkWin()) {
                 System.out.println("\n" + grid);
                 System.out.println("\n*** YOU WIN! ***\n");
+                count = 0;
+                reset();
+                continue;
+            }
+
+            if (count == 5) {
+                System.out.println("\n*** DRAW! ***\n");
+                count = 0;
                 reset();
                 continue;
             }
 
             String cpuChoice = rollCpuChoice();
             processPlay(cpuChoice, false);
-
             if (checkWin()) {
                 System.out.println("\n" + grid);
                 System.out.println("\n*** YOU LOSE! ***\n");
+                count = 0;
                 reset();
             }
         }
@@ -121,7 +131,6 @@ public class Main {
             if (Arrays.stream(col).distinct().count() == 1) return true;
         }
         return false;
-
     }
 
     private static String rollCpuChoice() {
@@ -134,8 +143,6 @@ public class Main {
 
          //if the CPU choice is taken, rolls a new random choice until the position is available
         } while (cpuChoice.equals("X") || cpuChoice.equals("O"));
-
         return cpuChoice;
     }
-
 }
