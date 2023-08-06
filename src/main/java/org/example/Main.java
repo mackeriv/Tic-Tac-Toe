@@ -149,8 +149,9 @@ public class Main {
             int dim2Pos = random.nextInt(gridArray[dim1Pos].length);
             cpuChoice = gridArray[dim1Pos][dim2Pos];
 
-         //if the CPU choice is taken, rolls a new random choice until the position is available
+            //if the CPU choice is taken, rolls a new random choice until the position is available
         } while (cpuChoice.equals("X") || cpuChoice.equals("O"));
         return cpuChoice;
     }
+
 }
