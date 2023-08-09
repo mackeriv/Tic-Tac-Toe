@@ -3,8 +3,8 @@ First attempt at creating a **Tic-Tac-Toe game** played against the CPU on the c
 
 ![screenshot1](Images/1.png)
 
-![screenshot1](Images/2.png)
+![screenshot2](Images/2.png)
 
-![screenshot1](Images/3.png)
+![screenshot3](Images/3.png)
 
 **TO DO:** Implement an AI algorithm for the CPU, such as Minimax.
