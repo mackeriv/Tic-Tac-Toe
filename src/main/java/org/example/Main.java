@@ -39,7 +39,7 @@ public class Main {
                 break;
             }
 
-            //resets the "found" flag the enables the program to prompt the user for a valid choice
+            //resets the "found" flag that enables the program to prompt the user for a valid choice
             found = false;
 
             if (!processPlay(userChoice, true)) continue;
